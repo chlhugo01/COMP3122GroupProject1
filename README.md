@@ -7,7 +7,7 @@
 | db container :      | db1                     |27101|
 | service container : | s1                      |15101|
 
-## Service 2 - Payment:
+## Service 2 - Payment: **tbc**
 |docker               |name                     |ports|
 |---------------------|-----------------        |-----|
 | db image :          | mongo_payment           |     |
@@ -15,7 +15,7 @@
 | db container :      | db2                     |27102|
 | service container : | s2                      |15102|
 
-## Service 3 - Update:
+## Service 3 - Update: **tbc**
 |docker               |name                     |ports|
 |---------------------|------------------       |-----|
 | db image :          | mongo_update            |     |
@@ -39,7 +39,7 @@
 | db container :      | db5                     |27105|
 | service container : | s5                      |15105|
 
-## Service 6 - Instant Messaging:
+## Service 6 - Instant Messaging: **tbc**
 |docker               |name                     |ports|
 |---------------------|------------------       |-----|
 | db image :          | mongo_message           |     |
@@ -47,7 +47,7 @@
 | db container :      | db6                     |27106|
 | service container : | s6                      |15106|
 
-## Service 7 - Location of Delivery Man:
+## Service 7 - Location of Delivery Man: **tbc**
 |docker               |name                     |ports|
 |---------------------|------------------       |-----|
 | db image :          | mongo_location          |     |
@@ -55,7 +55,7 @@
 | db container :      | db7                     |27107|
 | service container : | s7                      |15107|
 
-## Service 8 - Rating:
+## Service 8 - Rating: **tbc**
 |docker               |name                     |ports|
 |---------------------|------------------       |-----|
 | db image :          | mongo_rating            |     |
