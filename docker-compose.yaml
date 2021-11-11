@@ -17,6 +17,7 @@ version: "3.3"
         MONGO_INITDB_ROOT_PASSWORD: 23456
         MONGO_INITDB_DATABASE: admin
       volumes:
+        - ./mongo_order/order-init.js:/docker-entrypoint-initdb.d/order-init/
         - mongo_volume:/data_order/db
       ports:
         - 27017:27101
@@ -37,6 +38,7 @@ version: "3.3"
         MONGO_INITDB_ROOT_PASSWORD: 23456
         MONGO_INITDB_DATABASE: admin
       volumes:
+        - ./mongo_restaurant/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init/
         - mongo_volume:/data_restaurant/db
       ports:
         - 27017:27104
