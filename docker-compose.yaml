@@ -20,7 +20,7 @@ services:
   #     - ./user-init.js:/docker-entrypoint-initdb.d/user-init/
   #     - mongo_volume:/data_user/db
   #   ports:
-  #     - 27017:27100
+  #     - 27100:27017
 
 
   # mongo_order:
@@ -34,7 +34,7 @@ services:
   #     - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init/
   #     - mongo_volume:/data_order/db
   #   ports:
-  #     - 27017:27101
+  #     - 27101:27017
   # order_service:
   #   image: order_service
   #   container_name: s1
@@ -42,7 +42,7 @@ services:
   #   volumes:
   #     - ./order_service:/app_order
   #   ports:
-  #     - 15000:15101
+  #     - 15101:15000
 
   mongo_restaurant:
     image: mongo:latest
@@ -55,7 +55,7 @@ services:
       - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init/
       - mongo_volume:/data_restaurant/db
     ports:
-      - 27017:27104
+      - 27104:27017
   restaurant_service:
     image: restaurant_service
     container_name: s4
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./restaurant_service/restaurant-init.js:/app_restaurant
     ports:
-      - 15000:15104
+      - 15104:15000
 
   # mongo_delivery:
   #   image: mongo:latest
@@ -75,7 +75,7 @@ services:
   #   volumes:
   #     - mongo_volume:/data_delivery/db
   #   ports:
-  #     - 27017:27105
+  #     - 27105:27017
   # delivery_service:
   #   image: delivery_service
   #   container_name: s5
@@ -83,7 +83,7 @@ services:
   #   volumes:
   #     - ./delivery_service:/app_delivery
   #   ports:
-  #     - 15000:15105
+  #     - 15105:15000
 networks:
   default:
     name: pj_network
