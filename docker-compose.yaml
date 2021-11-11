@@ -8,6 +8,20 @@ version: "3.3"
       command: redis-server /usr/local/etc/redis/redis.conf
       environment:
         - ENV=develop
+    
+    mongo_userdb:
+      image: mongo_userdb
+      container_name: db_user
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: comp3122
+        MONGO_INITDB_ROOT_PASSWORD: 23456
+        MONGO_INITDB_DATABASE: admin
+      volumes:
+        - ./user-init.js:/docker-entrypoint-initdb.d/user-init/
+        - mongo_volume:/data_user/db
+      ports:
+        - 27017:27100
+
 
     mongo_order:
       image: mongo_order
