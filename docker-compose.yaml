@@ -8,6 +8,7 @@ version: "3.3"
       command: redis-server /usr/local/etc/redis/redis.conf
       environment:
         - ENV=develop
+
     mongo_order:
       image: mongo_order
       container_name: db1
@@ -27,6 +28,46 @@ version: "3.3"
         - ./order_service:/app_order
       ports:
         - 15000:15101
+
+    mongo_restaurant:
+      image: mongo_restaurant
+      container_name: db4
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: comp3122
+        MONGO_INITDB_ROOT_PASSWORD: 23456
+        MONGO_INITDB_DATABASE: admin
+      volumes:
+        - mongo_volume:/data_restaurant/db
+      ports:
+        - 27017:27104
+    restaurant_service:
+      image: restaurant_service
+      container_name: s4
+      build: ./restaurant_service
+      volumes:
+        - ./restaurant_service:/app_restaurant
+      ports:
+        - 15000:15104
+
+    mongo_delivery:
+      image: mongo_delivery
+      container_name: db5
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: comp3122
+        MONGO_INITDB_ROOT_PASSWORD: 23456
+        MONGO_INITDB_DATABASE: admin
+      volumes:
+        - mongo_volume:/data_delivery/db
+      ports:
+        - 27017:27105
+    delivery_service:
+      image: delivery_service
+      container_name: s5
+      build: ./delivery_service
+      volumes:
+        - ./delivery_service:/app_delivery
+      ports:
+        - 15000:15105
 networks:
   default:
     name: pj_network
