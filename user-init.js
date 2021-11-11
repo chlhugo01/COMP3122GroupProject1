@@ -1,10 +1,10 @@
 db.auth('comp3122', '23456')
 db = db.getSiblingDB('user')
 
-db.createCollection('costomer');
-db.costomer.insertOne({'costomer_id':1, 'username':'Alice', 'Address':'Hong Kong Happy House', 'phone_number': 92410781});
-db.costomer.insertOne({'costomer_id':2, 'username':'May', 'Address':'Hong Kong Exciting House', 'phone_number': 94356213});
-db.costomer.insertOne({'costomer_id':3, 'username':'Anson', 'Address':'Hong Kong Playing House', 'phone_number': 97325641});
+db.createCollection('customer');
+db.costomer.insertOne({'customer_id':1, 'username':'Alice', 'Address':'Hong Kong Happy House', 'phone_number': 92410781});
+db.costomer.insertOne({'customer_id':2, 'username':'May', 'Address':'Hong Kong Exciting House', 'phone_number': 94356213});
+db.costomer.insertOne({'customer_id':3, 'username':'Anson', 'Address':'Hong Kong Playing House', 'phone_number': 97325641});
 
 db.createCollection('restaurant');
 db.restaurant.insertOne({'restaurant_id':1, 'username':'Bob', 'Address':'Hong Kong Happy Dim Sum', 'phone_number': 25309035});
