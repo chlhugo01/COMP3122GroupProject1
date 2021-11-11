@@ -61,7 +61,7 @@ version: "3.3"
       container_name: s4
       build: ./restaurant_service
       volumes:
-        - ./restaurant_service:/app_restaurant
+        - ./restaurant_service/menu-init.js/:/app_restaurant
       ports:
         - 15000:15104
 

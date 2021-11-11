@@ -14,3 +14,4 @@ db.menu.insertOne({'restaurant_id':2,'Food_id':3,'Food_Name':'Beaf', 'Food_Price
 db.menu.insertOne({'restaurant_id':3,'Food_id':1,'Food_Name':'Curry rice', 'Food_Price': 35});
 db.menu.insertOne({'restaurant_id':3,'Food_id':2,'Food_Name':'Hamburger', 'Food_Price': 30});
 db.menu.insertOne({'restaurant_id':3,'Food_id':3,'Food_Name':'Ramen', 'Food_Price': 40});
+
