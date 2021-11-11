@@ -1,0 +1,21 @@
+version: "3.3"
+  service:
+    mongo_order:
+      image: mongo_order
+      container_name: db1
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: comp3122
+        MONGO_INITDB_ROOT_PASSWORD: 23456
+        MONGO_INITDB_DATABASE: admin
+      volumes:
+        - mongo_volume:/data_order/db
+      ports:
+        - 27017:27117
+    order_service:
+      image: order_service
+      container_name: s1
+      build: ./order_service
+      volumes:
+        - ./order_service:/app_order
+      ports:
+        - 15000:15100
