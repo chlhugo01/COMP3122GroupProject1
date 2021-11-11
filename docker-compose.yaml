@@ -31,7 +31,7 @@ services:
   #     MONGO_INITDB_ROOT_PASSWORD: 23456
   #     MONGO_INITDB_DATABASE: admin
   #   volumes:
-  #     - ./mongo_order/order-init.js:/docker-entrypoint-initdb.d/order-init/
+  #     - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init/
   #     - mongo_volume:/data_order/db
   #   ports:
   #     - 27017:27101
@@ -52,7 +52,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 23456
       MONGO_INITDB_DATABASE: admin
     volumes:
-      - ./mongo_restaurant/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init/
+      - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init/
       - mongo_volume:/data_restaurant/db
     ports:
       - 27017:27104
@@ -61,7 +61,7 @@ services:
     container_name: s4
     build: ./restaurant_service
     volumes:
-      - ./restaurant_service/menu-init.js/:/app_restaurant
+      - ./restaurant_service/restaurant-init.js:/app_restaurant
     ports:
       - 15000:15104
 
