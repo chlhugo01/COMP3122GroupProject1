@@ -9,40 +9,40 @@ services:
     environment:
       - ENV=develop
     
-  mongo_userdb:
-    image: mongo:latest
-    container_name: db_user
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: comp3122
-      MONGO_INITDB_ROOT_PASSWORD: 23456
-      MONGO_INITDB_DATABASE: admin
-    volumes:
-      - ./user-init.js:/docker-entrypoint-initdb.d/user-init/
-      - mongo_volume:/data_user/db
-    ports:
-      - 27017:27100
+  # mongo_userdb:
+  #   image: mongo:latest
+  #   container_name: db_user
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: comp3122
+  #     MONGO_INITDB_ROOT_PASSWORD: 23456
+  #     MONGO_INITDB_DATABASE: admin
+  #   volumes:
+  #     - ./user-init.js:/docker-entrypoint-initdb.d/user-init/
+  #     - mongo_volume:/data_user/db
+  #   ports:
+  #     - 27017:27100
 
 
-  mongo_order:
-    image: mongo:latest
-    container_name: db1
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: comp3122
-      MONGO_INITDB_ROOT_PASSWORD: 23456
-      MONGO_INITDB_DATABASE: admin
-    volumes:
-      - ./mongo_order/order-init.js:/docker-entrypoint-initdb.d/order-init/
-      - mongo_volume:/data_order/db
-    ports:
-      - 27017:27101
-  order_service:
-    image: order_service
-    container_name: s1
-    build: ./order_service
-    volumes:
-      - ./order_service:/app_order
-    ports:
-      - 15000:15101
+  # mongo_order:
+  #   image: mongo:latest
+  #   container_name: db1
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: comp3122
+  #     MONGO_INITDB_ROOT_PASSWORD: 23456
+  #     MONGO_INITDB_DATABASE: admin
+  #   volumes:
+  #     - ./mongo_order/order-init.js:/docker-entrypoint-initdb.d/order-init/
+  #     - mongo_volume:/data_order/db
+  #   ports:
+  #     - 27017:27101
+  # order_service:
+  #   image: order_service
+  #   container_name: s1
+  #   build: ./order_service
+  #   volumes:
+  #     - ./order_service:/app_order
+  #   ports:
+  #     - 15000:15101
 
   mongo_restaurant:
     image: mongo:latest
@@ -65,25 +65,25 @@ services:
     ports:
       - 15000:15104
 
-  mongo_delivery:
-    image: mongo:latest
-    container_name: db5
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: comp3122
-      MONGO_INITDB_ROOT_PASSWORD: 23456
-      MONGO_INITDB_DATABASE: admin
-    volumes:
-      - mongo_volume:/data_delivery/db
-    ports:
-      - 27017:27105
-  delivery_service:
-    image: delivery_service
-    container_name: s5
-    build: ./delivery_service
-    volumes:
-      - ./delivery_service:/app_delivery
-    ports:
-      - 15000:15105
+  # mongo_delivery:
+  #   image: mongo:latest
+  #   container_name: db5
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: comp3122
+  #     MONGO_INITDB_ROOT_PASSWORD: 23456
+  #     MONGO_INITDB_DATABASE: admin
+  #   volumes:
+  #     - mongo_volume:/data_delivery/db
+  #   ports:
+  #     - 27017:27105
+  # delivery_service:
+  #   image: delivery_service
+  #   container_name: s5
+  #   build: ./delivery_service
+  #   volumes:
+  #     - ./delivery_service:/app_delivery
+  #   ports:
+  #     - 15000:15105
 networks:
   default:
     name: pj_network
