@@ -6,4 +6,4 @@ WORKDIR /app
 COPY . /app
 RUN pip install -r requirements.txt --no-cache-dir
 
-CMD ["restaurant_service.py"]
+CMD ["login_service.py"]

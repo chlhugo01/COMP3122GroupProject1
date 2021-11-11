@@ -8,22 +8,39 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       - ENV=develop
-    
-  # mongo_userdb:
-  #   image: mongo:latest
-  #   container_name: db_user
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: comp3122
-  #     MONGO_INITDB_ROOT_PASSWORD: 23456
-  #     MONGO_INITDB_DATABASE: admin
-  #   volumes:
-  #     - ./user-init.js:/docker-entrypoint-initdb.d/user-init/
-  #     - mongo_volume:/data_user/db
-  #   ports:
-  #     - 27100:27017
-
-
-  mongo_order:
+  login_service:
+    container_name: c0
+    build: ./login_service
+    command: python login_service.py
+    volumes:
+      - ./login_service:/app_login
+    ports:
+      - 15100:15000
+    depends_on:
+      -  mongo_user
+  mongo_user:
+    image: mongo
+    container_name: db0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - ./login_service/user-init.js:/docker-entrypoint-initdb.d/user-init.js
+      - db0:/data/db
+    ports:
+      - 27100:27017
+  restaurant_service:
+    container_name: c1
+    build: ./restaurant_service
+    command: python restaurant_service.py
+    volumes:
+      - ./restaurant_service:/app_restaurant
+    ports:
+      - 15101:15000
+    depends_on:
+      -  mongo_restaurant
+  mongo_restaurant:
     image: mongo
     container_name: db1
     environment:
@@ -31,64 +48,40 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 23456
       MONGO_INITDB_DATABASE: admin
     volumes:
-      - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init.js
-      - mongo_volume:/data_order/db
-    expose:
-      - 27017
-      # ports:
-    #  - 27101:27017
-  order_service:
-    image: order_service
-    container_name: s1
-    build: ./order_service
-    volumes:
-      - ./order_service:/app
+      - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init.js
+      - db1:/data/db
     ports:
-      - 15000:15000
-
-  # mongo_restaurant:
-  #   image: mongo:latest
-  #   container_name: db4
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: comp3122
-  #     MONGO_INITDB_ROOT_PASSWORD: 23456
-  #     MONGO_INITDB_DATABASE: admin
-  #   volumes:
-  #     - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init/
-  #     - mongo_volume:/data_restaurant/db
-  #   ports:
-  #     - 27104:27017
-  # restaurant_service:
-  #   image: restaurant_service
-  #   container_name: s4
-  #   build: ./restaurant_service
-  #   volumes:
-  #     - ./restaurant_service/restaurant-init.js:/app_restaurant
-  #   ports:
-  #     - 15104:15000
-
-  # mongo_delivery:
-  #   image: mongo:latest
-  #   container_name: db5
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: comp3122
-  #     MONGO_INITDB_ROOT_PASSWORD: 23456
-  #     MONGO_INITDB_DATABASE: admin
-  #   volumes:
-  #     - mongo_volume:/data_delivery/db
-  #   ports:
-  #     - 27105:27017
-  # delivery_service:
-  #   image: delivery_service
-  #   container_name: s5
-  #   build: ./delivery_service
-  #   volumes:
-  #     - ./delivery_service:/app_delivery
-  #   ports:
-  #     - 15105:15000
+      - 27101:27017
+  order_service:
+    container_name: c2
+    build: ./order_service
+    command: python order_service.py
+    volumes:
+      - ./order_service:/app_order
+    ports:
+      - 15102:15000
+    depends_on:
+      -  mongo_order
+  mongo_order:
+    image: mongo
+    container_name: db2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init.js
+      - db2:/data/db
+    ports:
+      - 27102:27017
 networks:
   default:
     name: pj_network
 volumes:
-  mongo_volume:
-    name: mongo_vol
+  db0:
+    name: db0
+  db1:
+    name: db1
+  db2:
+    name: db2
+

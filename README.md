@@ -1,19 +1,29 @@
 # COMP3122 - Service details
-## Service 1 - Order:
+## Service 0 - login:
 |docker               |name                     |ports|
 |---------------------|---------------          |-----|
-| db image :          | mongo_order             |     |
-| service image :     | order_service           |     |
+| db image :          | mongo_user              |     |
+| service image :     | login_service           |     |
+| db container :      | db0                     |27100|
+| service container : | c0                      |15100|
+## Service 1 - restaurant:
+|docker               |name                     |ports|
+|---------------------|---------------          |-----|
+| db image :          | mongo_restaurant        |     |
+| service image :     | restaurant_service      |     |
 | db container :      | db1                     |27101|
-| service container : | s1                      |15101|
+| service container : | c1                      |15101|
 
-## Service 2 - Payment: **tbc**
+## Service 2 - order
 |docker               |name                     |ports|
 |---------------------|-----------------        |-----|
-| db image :          | mongo_payment           |     |
-| service image :     | payment_service         |     |
+| db image :          | mongo_order             |     |
+| service image :     | order_service           |     |
 | db container :      | db2                     |27102|
-| service container : | s2                      |15102|
+| service container : | c2                      |15102|
+
+## Not updated
+
 
 ## Service 3 - Update: **tbc**
 |docker               |name                     |ports|
