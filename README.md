@@ -1,8 +1,7 @@
-# COMP3122
-
+# COMP3122 - Service details
 ## Service 1 - Order:
-|docker                   |name       |ports|
-|-------------------------|-----------|-----|
+|docker               |name           |ports|
+|---------------------|---------------|-----|
 | db image :          | mongo_order   |     |
 | service image :     | order_service |     |
 | db container :      | db1           |27101|
@@ -63,3 +62,5 @@
 | service image :     | rating_service   |     |
 | db container :      | db8              |27108|
 | service container : | s8               |15108|
+
+# Useful Command

@@ -1,5 +1,13 @@
 version: "3.3"
   service:
+    redis:
+      image: redis:latest
+      volumes:
+        - ./redis.conf:/usr/local/etc/redis/redis.conf
+      container_name: redis
+      command: redis-server /usr/local/etc/redis/redis.conf
+      environment:
+        - ENV=develop
     mongo_order:
       image: mongo_order
       container_name: db1
@@ -10,7 +18,7 @@ version: "3.3"
       volumes:
         - mongo_volume:/data_order/db
       ports:
-        - 27017:27117
+        - 27017:27101
     order_service:
       image: order_service
       container_name: s1
@@ -18,4 +26,7 @@ version: "3.3"
       volumes:
         - ./order_service:/app_order
       ports:
-        - 15000:15100
+        - 15000:15101
+networks:
+  default:
+    name: pj_network
