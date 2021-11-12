@@ -8,6 +8,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       - ENV=develop
+
   login_service:
     container_name: c0
     build: ./login_service
@@ -18,6 +19,7 @@ services:
       - 15100:15000
     depends_on:
       -  mongo_user
+
   mongo_user:
     image: mongo
     container_name: db0
@@ -30,6 +32,7 @@ services:
       - db0:/data/db
     ports:
       - 27100:27017
+
   restaurant_service:
     container_name: c1
     build: ./restaurant_service
@@ -40,6 +43,7 @@ services:
       - 15101:15000
     depends_on:
       -  mongo_restaurant
+
   mongo_restaurant:
     image: mongo
     container_name: db1
@@ -52,7 +56,9 @@ services:
       - db1:/data/db
     ports:
       - 27101:27017
+
   order_service:
+    image: order_service
     container_name: c2
     build: ./order_service
     command: python order_service.py
@@ -62,6 +68,7 @@ services:
       - 15102:15000
     depends_on:
       -  mongo_order
+
   mongo_order:
     image: mongo
     container_name: db2
@@ -72,11 +79,13 @@ services:
     volumes:
       - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init.js
       - db2:/data/db
-    ports:
-      - 27102:27017
+    expose:
+      - 27017
+
 networks:
   default:
     name: pj_network
+
 volumes:
   db0:
     name: db0
