@@ -15,14 +15,16 @@ def welcome():
 
 @app.route('/order', methods=['GET'])
 def get_menu():
-    allmenu = []
+    rs = []
     for i in restaurantdb.Restaurant.restaurants.find({},{"_id": 0}).sort("id"):
-        menu = {'name': i['name'], 'address': i['address'], 'phone_number': int(i['phone_number'])}
+        r = {'name': i['name'], 'address': i['address'], 'phone_number': int(i['phone_number'])}
+        m = {}
         for j in restaurantdb.Restaurant.menu.find({},{"_id": 0}).sort("id"):
             if i['id'] == j['restaurant_id']:
-                menu[j['name']] = j['price']
-        allmenu.append(menu)
-    return jsonify(allmenu), 200
+                m[j['name']] = j['price']
+        r['menu'] = m
+        rs.append(r)
+    return jsonify(rs), 200
 
 @app.route('/order/<order_id>')
 def order(order_id):
