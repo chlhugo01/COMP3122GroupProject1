@@ -6,4 +6,4 @@ WORKDIR /app
 COPY . /app
 RUN pip install -r requirements.txt --no-cache-dir
 
-CMD ["order_service.py"]
+CMD ["python", "order_service.py"]

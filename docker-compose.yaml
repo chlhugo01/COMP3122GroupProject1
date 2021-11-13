@@ -1,73 +1,44 @@
 version: "3.3"
 services:
-  redis:
-    image: redis:latest
-    volumes:
-    - ./redis.conf:/usr/local/etc/redis/redis.conf
-    container_name: redis
-    command: redis-server /usr/local/etc/redis/redis.conf
-    environment:
-      - ENV=develop
+  # redis:
+  #   image: redis:latest
+  #   volumes:
+  #   - ./redis.conf:/usr/local/etc/redis/redis.conf
+  #   container_name: redis
+  #   command: redis-server /usr/local/etc/redis/redis.conf
+  #   environment:
+  #     - ENV=develop
 
-  login_service:
-    container_name: c0
-    build: ./login_service
-    command: python login_service.py
-    volumes:
-      - ./login_service:/app_login
-    ports:
-      - 15100:15000
-    depends_on:
-      -  mongo_user
+  # login_service:
+  #   container_name: c0
+  #   build: ./login_service
+  #   command: python login_service.py
+  #   volumes:
+  #     - ./login_service:/app
+  #   ports:
+  #     - 15100:15000
+  #   depends_on:
+  #     -  mongo_user
 
-  mongo_user:
-    image: mongo
-    container_name: db0
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: comp3122
-      MONGO_INITDB_ROOT_PASSWORD: 23456
-      MONGO_INITDB_DATABASE: admin
-    volumes:
-      - ./login_service/user-init.js:/docker-entrypoint-initdb.d/user-init.js
-      - db0:/data/db
-    ports:
-      - 27100:27017
-
-  restaurant_service:
-    container_name: c1
-    build: ./restaurant_service
-    command: python restaurant_service.py
-    volumes:
-      - ./restaurant_service:/app_restaurant
-    ports:
-      - 15101:15000
-    depends_on:
-      -  mongo_restaurant
-
-  mongo_restaurant:
-    image: mongo
-    container_name: db1
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: comp3122
-      MONGO_INITDB_ROOT_PASSWORD: 23456
-      MONGO_INITDB_DATABASE: admin
-    volumes:
-      - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init.js
-      - db1:/data/db
-    ports:
-      - 27101:27017
+  # restaurant_service:
+  #   container_name: c1
+  #   build: ./restaurant_service
+  #   command: python restaurant_service.py
+  #   volumes:
+  #     - ./restaurant_service:/app
+  #   ports:
+  #     - 15101:15000
+  #   depends_on:
+  #     -  mongo_restaurant
 
   order_service:
     image: order_service
     container_name: c2
     build: ./order_service
-    command: python order_service.py
     volumes:
-      - ./order_service:/app_order
+      - ./order_service:/app
     ports:
-      - 15102:15000
-    depends_on:
-      -  mongo_order
+      - 15000:15000
 
   mongo_order:
     image: mongo
@@ -81,6 +52,32 @@ services:
       - db2:/data/db
     expose:
       - 27017
+
+  mongo_user:
+    image: mongo
+    container_name: db0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - ./login_service/user-init.js:/docker-entrypoint-initdb.d/user-init.js
+      - db0:/data/db
+    ports:
+      - 27100:27017
+      
+  mongo_restaurant:
+    image: mongo
+    container_name: db1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - ./restaurant_service/restaurant-init.js:/docker-entrypoint-initdb.d/restaurant-init.js
+      - db1:/data/db
+    ports:
+      - 27101:27017
 
 networks:
   default:
