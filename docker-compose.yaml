@@ -95,6 +95,17 @@ services:
       - 15103:15000
     depends_on:
       -  mongo_restaurant
+      
+  delivery_service:
+    container_name: c5
+    build: ./delivery_service
+    command: python delivery_service.py
+    volumes:
+      - ./delivery_service:/app
+    ports:
+      - 15105:15000
+    depends_on:
+      -  mongo_order
   #prometheus:
   #  image: prom/prometheus
   #  ports:
