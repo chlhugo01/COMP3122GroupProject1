@@ -6,27 +6,35 @@ import time
 import os
 
 app = Flask(__name__)
-client = MongoClient('mongodb://comp3122:23456@db1:27017')
-
+orderdb = MongoClient('mongodb://comp3122:23456@db2:27017').order
+menuCollection = MongoClient('mongodb://comp3122:23456@db1:27017').Restaurant.menu
 @app.route('/')
-def todo():
-    return jsonify({"Student ID": "190dfdsfd7d", "Name": "Lee Chun Hang"}), 200
+def welcome():
+    return jsonify({"Welcome Message": "Hello, Restaurant"}), 200
 
-@app.route('/store')
-def me():
-    return render_template('store.html', storearr=temp6)
+@app.route('/restaurant/<resturant_id>', methods=['GET'])
+def prepare_food(resturant_id):
+    todo = []
+    for i in orderdb.receipts.find({'restaurant_id': int(resturant_id), 'status': 'ordered'},{'_id': 0}):
+        list = []
+        list.append({'customer_id': int(i['customer_id']),
+                        'receipt_id': int(i['id'])})
+        food = {}
+        for j in orderdb.details.find({'receipt_id': i['id']}, {'_id': 0}):
+            f_name = menuCollection.find_one({'id': j['food_id']})['name']
+            food[f_name] = int(j['number'])
+        list.append(food)
+        todo.append(list)
+    return jsonify(todo), 200
 
-@app.route('/resturant/<resturant_id>')
-def store_name(resturant_id):
-    menuresult = client.Menu.menu.find({"restaurant_id":int(resturant_id)})
-    menu = []
-    for food in menuresult:
-        menu.append({
-            'Food_Name': food["Food_Name"],
-            'Food_id':food["Food_id"],
-            'Food_Price': food['Food_Price']
-        })
-    return render_template('menu.html',menu=menu)
+@app.route('/done/<receipt_id>', methods=['GET'])
+def complete_food(receipt_id):
+    x = orderdb.receipts.find_one({'id': int(receipt_id), 'status': 'ordered'},{'_id': 0})
+    if x is None:
+        return jsonify({'error': 'receipt not found or it is already completed.'}), 404
+    orderdb.receipts.update_one({'id': int(receipt_id)}, { "$set": {'status': 'done'}})
+    x = orderdb.receipts.find_one({'id': int(receipt_id)},{'_id': 0})
+    return jsonify(x), 200
 
 @app.route('/testresult',methods=["GET"])
 def testresult():

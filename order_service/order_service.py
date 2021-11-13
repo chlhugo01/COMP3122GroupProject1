@@ -64,7 +64,6 @@ def order(r):
                 detail["receipt_id"] = int(new_receipt['id'])
                 detail["food_id"] = int(food[0])
                 detail["number"] = food[1]
-                detail["price"] = food[2]
                 orderdb.order.details.insert_one(detail)
                 detail = orderdb.order.details.find_one({'id' : details_max_id + 1}, {"_id": 0})
                 foodlist.append(detail)
