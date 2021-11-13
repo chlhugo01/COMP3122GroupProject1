@@ -14,7 +14,7 @@ services:
     build: ./login_service
     command: python login_service.py
     volumes:
-      - ./login_service:/app_login
+      - ./login_service:/app
     ports:
       - 15100:15000
     depends_on:
@@ -38,7 +38,7 @@ services:
     build: ./restaurant_service
     command: python restaurant_service.py
     volumes:
-      - ./restaurant_service:/app_restaurant
+      - ./restaurant_service:/app
     ports:
       - 15101:15000
     depends_on:
@@ -63,7 +63,7 @@ services:
     build: ./order_service
     command: python order_service.py
     volumes:
-      - ./order_service:/app_order
+      - ./order_service:/app
     ports:
       - 15102:15000
     depends_on:
