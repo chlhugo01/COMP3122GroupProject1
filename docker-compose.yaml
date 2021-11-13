@@ -98,7 +98,8 @@ services:
   redis:
     container_name: redis
     image: redis
-    expose: 6379
+    expose:
+      - 6379
   #prometheus:
   #  image: prom/prometheus
   #  ports:
