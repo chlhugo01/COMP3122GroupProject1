@@ -4,10 +4,14 @@ import pytest
 import requests
 import time
 import os
-
+from prometheus_flask_exporter import PrometheusMetrics
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
+
 orderdb = MongoClient('mongodb://comp3122:23456@db2:27017').order
 menuCollection = MongoClient('mongodb://comp3122:23456@db1:27017').Restaurant.menu
+
 @app.route('/')
 def welcome():
     return jsonify({"Welcome Message": "Hello, Restaurant"}), 200
