@@ -6,10 +6,18 @@ import requests
 import datetime
 import time
 import os
+import redis
+import json
 
 app = Flask(__name__)
 
+r = redis.Redis(host='redis', port=6379)
+
 client = MongoClient('mongodb://comp3122:23456@db0:27017')
+
+def authenticate_token(token):
+    return jwt.decode(token, "secretPassword", algorithms=["HS256"])
+
 
 @app.route('/')
 def todo():
@@ -34,18 +42,43 @@ def login():
 def api_login():
     username = request.args.get('username')
     password = request.args.get('password')
-    if client.user.customer.find_one({"username": username,'password':password}):
-            payload = {'username': username, 'usergroup': 'customer', 'logindt': str(datetime.datetime.utcnow())}
-    elif client.user.restaurant.find_one({"username": username,'password':password}):
-        return "restaurant "+username+password
-    elif client.user.delivery.find_one({"username": username,'password':password}):
-        return "delivery "+username+password
+    if result := client.user.customer.find_one({"username": username,'password':password}):
+        id = result['customer_id']
+        payload = {'id': id, 'usergroup': 'customer', 'logindt': str(datetime.datetime.utcnow())}
+    elif result := client.user.restaurant.find_one({"username": username,'password':password}):
+        id = result['restaurant_id']
+        payload = {'id': id, 'usergroup': 'customer', 'logindt': str(datetime.datetime.utcnow())}
+    elif result := client.user.delivery.find_one({"username": username,'password':password}):
+        id = result['restaurant_id']
+        payload = {'id': id, 'usergroup': 'customer', 'logindt': str(datetime.datetime.utcnow())}
     else:
-        return "NO account info"
-    token = jwt.encode(payload, "secret", algorithm="HS256")
+        return {'error': 'user not found'}, 404
+    token = jwt.encode(payload, "secretPassword", algorithm="HS256")
     session['token'] = token
-    return {'token': token}
+    return {'token': token}, 200
 
+
+@app.route('/api/order/<int:r>', methods=['POST'])
+def api_order(r):
+    token = request.args.get('token')
+    load = authenticate_token(token)
+
+    orders = []
+    count = 0
+    while True:
+        f, q = 'food_id'+str(count), 'quantity'+str(count)
+        if f in request.args.keys() and q in request.args.keys():
+            orders.append({'id': request.args.get(f), 'quantity': request.args.get(q)})
+        else:
+            break
+        count+=1
+    data = {'user_id': load['id'], 'restaurant_id': r, 'orders': orders}
+    jsonstr = json.dumps(data)
+
+    r.publish('customer_order', jsonstr)
+    
+
+    return jsonstr
 
 
 

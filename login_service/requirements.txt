@@ -6,3 +6,4 @@ pyjwt
 pymongo
 pytest
 requests
+redis
