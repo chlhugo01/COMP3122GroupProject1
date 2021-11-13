@@ -82,6 +82,17 @@ services:
     expose:
       - 27017
 
+  update_service:
+    container_name: c3
+    build: ./update_service
+    command: python update_service.py
+    volumes:
+      - ./update_service:/app
+    ports:
+      - 15103:15000
+    depends_on:
+      -  mongo_restaurant
+      
 networks:
   default:
     name: pj_network
