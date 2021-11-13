@@ -1,16 +1,11 @@
 db.auth('comp3122', '23456')
-db = db.getSiblingDB('Order')
+db = db.getSiblingDB('order')
 
-db.createCollection('order');
+db.createCollection('receipts');
+db.receipts.insertOne({'id': 1, 'customer_id': 0,'restaurant_id': 1, 'status': 'finished'});
+db.receipts.insertOne({'id': 2, 'customer_id': 0,'restaurant_id': 1, 'status': 'finished'});
+db.receipts.insertOne({'id': 3, 'customer_id': 0,'restaurant_id': 3, 'status': 'finished'});
+db.receipts.insertOne({'id': 4, 'customer_id': 0,'restaurant_id': 2, 'status': 'finished'});
 
-db.order.insertOne({'order_id': 1, 'customer_id': 1,'restaurant_id': 1,'delivery_id': 1});
-db.order.insertOne({'order_id': 2, 'customer_id': 2,'restaurant_id': 1,'delivery_id': 2});
-db.order.insertOne({'order_id': 3, 'customer_id': 2,'restaurant_id': 3,'delivery_id': 3});
-db.order.insertOne({'order_id': 4, 'customer_id': 3,'restaurant_id': 2,'delivery_id': 3});
-
-db.createCollection('detail');
-db.detail.insertOne({'order_id': 1, 'food_id': 1, 'number': 1});
-db.detail.insertOne({'order_id': 1, 'food_id': 2, 'number': 2});
-db.detail.insertOne({'order_id': 2, 'food_id': 1, 'number': 2});
-db.detail.insertOne({'order_id': 3, 'food_id': 1, 'number': 1});
-db.detail.insertOne({'order_id': 4, 'food_id': 3, 'number': 2});
+db.createCollection('details');
+db.details.insertOne({'id': 1, 'receipt_id': 1, 'food_id': 1, 'number': 1, 'price': 5});

@@ -1,24 +1,17 @@
 version: "3.3"
 services:
-  redis:
-    image: redis:latest
-    volumes:
-    - ./redis.conf:/usr/local/etc/redis/redis.conf
-    container_name: redis
-    command: redis-server /usr/local/etc/redis/redis.conf
+  mongo_order:
+    image: mongo
+    container_name: db2
     environment:
-      - ENV=develop
-
-  login_service:
-    container_name: c0
-    build: ./login_service
-    command: python login_service.py
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
     volumes:
-      - ./login_service:/app
-    ports:
-      - 15100:15000
-    depends_on:
-      -  mongo_user
+      - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init.js
+      - db2:/data/db
+    expose:
+      - 27017
 
   mongo_user:
     image: mongo
@@ -68,7 +61,7 @@ services:
       - 15102:15000
     depends_on:
       -  mongo_order
-
+      
   mongo_order:
     image: mongo
     container_name: db2
