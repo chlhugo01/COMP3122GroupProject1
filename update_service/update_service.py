@@ -1,6 +1,6 @@
 from flask import request, Flask, jsonify
 import pymongo
-import sys
+import pytest
 
 app = Flask(__name__)
 client = pymongo.MongoClient('mongodb://comp3122:23456@db1:27017')
@@ -69,6 +69,14 @@ def showmenu():
     for x in show:
         output.append(x)
     return jsonify(output),200
+
+@app.route('/testresult',methods=["GET"])
+def testresult():
+        a=pytest.main(['/app/unit.py']).value
+        if(a == 0 ):
+            return "ok",200
+        else:
+            return "not ok",400
 
 # start flask server
 if __name__ == '__main__':
