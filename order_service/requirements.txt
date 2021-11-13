@@ -4,3 +4,4 @@ pytest
 requests
 flask_prometheus_metrics
 prometheus_flask_exporter
+redis
