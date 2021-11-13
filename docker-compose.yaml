@@ -1,36 +1,5 @@
 version: "3.3"
 services:
-  # redis:
-  #   image: redis:latest
-  #   volumes:
-  #   - ./redis.conf:/usr/local/etc/redis/redis.conf
-  #   container_name: redis
-  #   command: redis-server /usr/local/etc/redis/redis.conf
-  #   environment:
-  #     - ENV=develop
-
-  # login_service:
-  #   container_name: c0
-  #   build: ./login_service
-  #   command: python login_service.py
-  #   volumes:
-  #     - ./login_service:/app
-  #   ports:
-  #     - 15100:15000
-  #   depends_on:
-  #     -  mongo_user
-
-  # restaurant_service:
-  #   container_name: c1
-  #   build: ./restaurant_service
-  #   command: python restaurant_service.py
-  #   volumes:
-  #     - ./restaurant_service:/app
-  #   ports:
-  #     - 15101:15000
-  #   depends_on:
-  #     -  mongo_restaurant
-
   order_service:
     image: order_service
     container_name: c2
@@ -65,7 +34,18 @@ services:
       - db0:/data/db
     ports:
       - 27100:27017
-      
+
+  restaurant_service:
+    container_name: c1
+    build: ./restaurant_service
+    command: python restaurant_service.py
+    volumes:
+      - ./restaurant_service:/app
+    ports:
+      - 15101:15000
+    depends_on:
+      -  mongo_restaurant
+
   mongo_restaurant:
     image: mongo
     container_name: db1
@@ -78,6 +58,31 @@ services:
       - db1:/data/db
     ports:
       - 27101:27017
+
+  order_service:
+    image: order_service
+    container_name: c2
+    build: ./order_service
+    command: python order_service.py
+    volumes:
+      - ./order_service:/app
+    ports:
+      - 15102:15000
+    depends_on:
+      -  mongo_order
+
+  mongo_order:
+    image: mongo
+    container_name: db2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: comp3122
+      MONGO_INITDB_ROOT_PASSWORD: 23456
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - ./order_service/order-init.js:/docker-entrypoint-initdb.d/order-init.js
+      - db2:/data/db
+    expose:
+      - 27017
 
 networks:
   default:
