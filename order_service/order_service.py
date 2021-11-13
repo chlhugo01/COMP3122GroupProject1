@@ -44,13 +44,14 @@ def order(r):
                 food_count += 1
             else:
                 return jsonify({'error': 'restaurant ' + r + ' not found food ' + id}), 404
-        else:
+        elif food_count > 0:
             result = []
             new_receipt = {}
             receipts_max_id = orderdb.order.receipts.find_one({}, {'_id': 0}, sort=[('id', -1)])['id']
-            new_receipt["id"] = receipts_max_id + 1
-            new_receipt["customer_id"] = 0
+            new_receipt["id"] = int(receipts_max_id + 1)
+            new_receipt["customer_id"] = int(0)  # This is hardcode, need to change after the pubsub is finished.
             new_receipt["restaurant_id"] = r
+            new_receipt["status"] = 'ordered'
             orderdb.order.receipts.insert_one(new_receipt)
             new_receipt = orderdb.order.receipts.find_one({'id' : receipts_max_id + 1}, {"_id": 0})
             result.append(new_receipt)
@@ -59,9 +60,9 @@ def order(r):
             details_max_id = orderdb.order.details.find_one({}, {'_id': 0}, sort=[('id', -1)])['id']
             for food in foods:
                 detail = {}
-                detail["id"] = details_max_id + 1
-                detail["receipts_id"] = new_receipt['id']
-                detail["food_id"] = food[0]
+                detail["id"] = int(details_max_id + 1)
+                detail["receipt_id"] = int(new_receipt['id'])
+                detail["food_id"] = int(food[0])
                 detail["number"] = food[1]
                 detail["price"] = food[2]
                 orderdb.order.details.insert_one(detail)
@@ -71,6 +72,7 @@ def order(r):
             result.append(foodlist)
             result.append({'total': total})
             return jsonify(result), 200
+        return jsonify({'error': 'parameter empty'}), 404
 
 @app.route('/testresult',methods=["GET"])
 def testresult():
