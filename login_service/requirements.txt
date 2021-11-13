@@ -1,6 +1,8 @@
-pymongo
 flask
+flask_prometheus_metrics
+Flask-Session
+prometheus_flask_exporter
+pyjwt
+pymongo
 pytest
 requests
-flask_prometheus_metrics
-prometheus_flask_exporter
