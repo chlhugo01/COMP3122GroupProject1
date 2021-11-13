@@ -106,6 +106,10 @@ services:
       - 15105:15000
     depends_on:
       -  mongo_order
+  redis:
+    container_name: redis
+    image: redis
+    expose: 6379
   #prometheus:
   #  image: prom/prometheus
   #  ports:
