@@ -1,14 +1,5 @@
 version: "3.3"
 services:
-  order_service:
-    image: order_service
-    container_name: c2
-    build: ./order_service
-    volumes:
-      - ./order_service:/app
-    ports:
-      - 15000:15000
-
   mongo_order:
     image: mongo
     container_name: db2
@@ -70,7 +61,7 @@ services:
       - 15102:15000
     depends_on:
       -  mongo_order
-
+      
   mongo_order:
     image: mongo
     container_name: db2
