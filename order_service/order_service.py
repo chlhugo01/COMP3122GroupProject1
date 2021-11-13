@@ -4,7 +4,9 @@ import pytest
 import requests
 import time
 import os
+import redis
 
+r = redis.Redis(host='redis', port=6379)
 app = Flask(__name__)
 orderdb = MongoClient('mongodb://comp3122:23456@db2:27017')
 restaurantdb = MongoClient('mongodb://comp3122:23456@db1:27017')
@@ -24,6 +26,7 @@ def get_menu():
                 m[str(int(j['id'])) + ": " + j['name']] = j['price']
         r['menu'] = m
         rs.append(r)
+    r.publish('order_menu', r)
     return jsonify(rs), 200
 
 @app.route('/order/<int:r>', methods=['GET'])
@@ -81,6 +84,11 @@ def testresult():
         else:
             return "not ok",400
 
-
 if __name__ == "__main__":
+    ps = r.pubsub()
+    ps.subscribe(**{'customer_test': welcome})
+    ps.subscribe(**{'customer_menu': get_menu})
+    ps.subscribe(**{'customer_order': order})
+    thread = ps.run_in_thread(sleep_time=0.001)
     app.run(host='0.0.0.0', debug=True, port=15000)
+
