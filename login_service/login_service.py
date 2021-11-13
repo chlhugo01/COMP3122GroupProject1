@@ -34,6 +34,15 @@ def login():
         return render_template('login.html')
 
 
+
+@app.route('/testresult',methods=["GET"])
+def testresult():
+        a=pytest.main(['/app_login/unit.py']).value
+        if(a == 0 ):
+            return "ok",200
+        else:
+            return "not ok",400
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=15000)
 
