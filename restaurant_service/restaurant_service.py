@@ -4,6 +4,9 @@ import pytest
 import requests
 import time
 import os
+import redis
+
+r = redis.Redis(host='redis', port=6379)
 from prometheus_flask_exporter import PrometheusMetrics
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -50,4 +53,8 @@ def testresult():
 
 
 if __name__ == "__main__":
+    ps = r.pubsub()
+    ps.subscribe(**{'restaurant_prepareFood': prepare_food})
+    ps.subscribe(**{'restaurant_completedFood': complete_food})
+    thread = ps.run_in_thread(sleep_time=0.001)
     app.run(host='0.0.0.0', debug=True, port=15000)
