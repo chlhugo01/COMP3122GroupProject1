@@ -4,8 +4,10 @@ import pytest
 import requests
 import time
 import os
-
+from prometheus_flask_exporter import PrometheusMetrics
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
 client = MongoClient('mongodb://comp3122:23456@db1:27017')
 
 @app.route('/')

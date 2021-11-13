@@ -1,5 +1,16 @@
 version: "3.3"
 services:
+  login_service:
+    container_name: c0
+    build: ./login_service
+    command: python login_service.py
+    volumes:
+      - ./login_service:/app
+    ports:
+      - 15100:15000
+    depends_on:
+      -  mongo_user
+    
   mongo_order:
     image: mongo
     container_name: db2
@@ -12,7 +23,6 @@ services:
       - db2:/data/db
     expose:
       - 27017
-
   mongo_user:
     image: mongo
     container_name: db0
@@ -85,7 +95,32 @@ services:
       - 15103:15000
     depends_on:
       -  mongo_restaurant
-      
+  #prometheus:
+  #  image: prom/prometheus
+  #  ports:
+  #    - 9090:9090
+  #  volumes:
+  #    - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #    - ./alert_rules.yaml:/etc/prometheus/alert_rules.yaml
+  #grafana:
+  #  image: grafana/grafana
+  #  volumes:
+  #    - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
+  #    - ./grafana/provisioning/:/etc/grafana/provisioning/
+  #  ports:
+  #    - 3000:3000
+  #  depends_on:
+  #    -  prometheus
+  #alertmanager:
+  #   image: prom/alertmanager
+  #   ports:
+  #     - 9093:9093
+  #   volumes:
+  #     - ./alertmanager.yaml/:/etc/alertmanager/alertmanager.yaml
+  #   restart: always
+  #   command:
+  #     - '--config.file=/etc/alertmanager/alertmanager.yaml'
+  #     - '--storage.path=/alertmanager'
 networks:
   default:
     name: pj_network
