@@ -38,6 +38,14 @@ def order(order_id):
     #     })
     return jsonify(order), 200
 
+@app.route('/testresult',methods=["GET"])
+def testresult():
+        a=pytest.main(['/app_order/unit.py']).value
+        if(a == 0 ):
+            return "ok",200
+        else:
+            return "not ok",400
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=15000)
