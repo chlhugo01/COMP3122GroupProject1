@@ -21,7 +21,7 @@ def authenticate_token(token):
 
 @app.route('/')
 def todo():
-    return jsonify({"Student ID": "190dfd", "Name": "Lee Chun Hang"}), 200
+    return jsonify({"Message": "Welcome to login page"}), 200
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -62,7 +62,6 @@ def api_login():
 def api_order(r):
     token = request.args.get('token')
     load = authenticate_token(token)
-
     orders = []
     count = 0
     while True:
